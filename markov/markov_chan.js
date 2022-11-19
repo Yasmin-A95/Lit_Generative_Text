@@ -6,26 +6,43 @@
 - certain sequences appear more than others
 - spit out new text based on probabilities 
 */
-const text = "this rainbow has a unicorn flying over it this rainbow has a unicorn flying over it this is it chaps the big one markos the big gun run mum fun run bun wow";
+const fs = require('fs').promises
 
-function nGrams(text) {
+async function readText() {
+    const text = await fs.readFile('./input.txt', "utf-8");
+    return text
+}
+
+async function getText() {
+    await readText().then((res, err) => {
+        if (err) {
+            console.log("error", err)
+        }
+        if (res) {
+            console.log(nGramsFunc(res, 2))
+        }
+    })
+}
+getText()
+
+function nGramsFunc(text, num) {
+    const order = num || 2;
     const nGrams = [];
-    const order = 2;
     for (let i = 0; i <= (text.length - 1) / (order * 2); i++) {
         const textArray = text.split(" ")
         const gram = textArray.slice(i, i + order);
         nGrams.push(gram.join(" "))
     }
-    return nGrams
+    return nGramsOrganised(text, nGrams)
 }
-let nGramsRes = nGrams(text)
+
 
 function nGramsOrganised(text, nGrams) {
     let orderedGrams = {}
-    const uniqueWords = new Set(text.split(" "))
+    text = text.split(" ")
     let wordsCombos = [];
 
-    uniqueWords.forEach(word => {
+    text.map(word => {
         let wordCombos = []
         nGrams.map(nGram => {
             nGramArr = nGram.split(" ")
@@ -38,4 +55,19 @@ function nGramsOrganised(text, nGrams) {
     })
     return orderedGrams
 }
-console.log(nGramsOrganised(text, nGramsRes))
+
+/*
+- if i do something like for each  key in the obj returned from nGrams(text, 2)
+- find the n number of things that typically come after it in text then we're really marko chaining
+*/
+
+// twoRes = nGrams(text)
+// function iterateOverTwoRes(twoRes) {
+//     Object.values(twoRes).forEach((val) => {
+//         for (let i = 0; i < val.length; i++) {
+//             let current = val[i]
+//             //current = current.join(",") // this is because I didnt clean the original text
+//             nGrams(current) // no that doesnt make sense
+//         }
+//     })
+// }
