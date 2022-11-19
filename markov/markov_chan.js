@@ -15,9 +15,11 @@ for (let i = 0; i <= text.length / (order * 2); i++) {
     const gram = textArray.slice(i, i + order);
     //nGrams[i] = gram
     if (!nGrams[gram]) {
-        nGrams[gram] = 1
+        nGrams[gram] = [];
+        nGrams[gram].push(gram.toString())
     } else {
-        nGrams[gram]++
+        nGrams[gram].push(gram.toString())
+        //nGrams[gram]++
     }
 }
 console.log(nGrams)
