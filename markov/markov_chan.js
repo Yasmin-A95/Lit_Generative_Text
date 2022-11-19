@@ -18,7 +18,7 @@ async function getText() {
         if (err) {
             console.log("error", err)
         }
-        if (res) {
+        else if (res) {
             console.log(nGramsFunc(res, 2))
         }
     })
