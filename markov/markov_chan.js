@@ -6,24 +6,18 @@
 - certain sequences appear more than others
 - spit out new text based on probabilities 
 */
-const fs = require('fs').promises
+const fs = require('fs');
 
 async function readText() {
-    const text = await fs.readFile('./input.txt', "utf-8");
-    return text
-}
-
-async function getText() {
-    await readText().then((res, err) => {
+    fs.readFile('./input.txt', "utf-8", (err, res) => { // ok the err can't be the second param lol fuck
         if (err) {
             console.log("error", err)
-        }
-        else if (res) {
-            console.log(nGramsFunc(res, 2))
+        } else if (res) {
+            nGramsFunc(res, 2)
         }
     })
 }
-getText()
+readText()
 
 function nGramsFunc(text, num) {
     const order = num || 2;
@@ -39,20 +33,21 @@ function nGramsFunc(text, num) {
 
 function nGramsOrganised(text, nGrams) {
     let orderedGrams = {}
-    text = text.split(" ")
+    text = text.split(" ") // only now is text mutated 
     let wordsCombos = [];
 
     text.map(word => {
         let wordCombos = []
         nGrams.map(nGram => {
             nGramArr = nGram.split(" ")
-            if (nGramArr[0] == word) {
+            if (nGramArr[0] == word) { // because it's passed nGrams of two words each, the first word is therefore the target i.e. [0]
                 wordCombos.push(nGram)
             }
         })
         wordsCombos.push(wordCombos)
         orderedGrams[word] = wordCombos
     })
+    console.log(orderedGrams)
     return orderedGrams
 }
 
