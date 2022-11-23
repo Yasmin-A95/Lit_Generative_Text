@@ -18,6 +18,8 @@ async function readText() {
 readText()
 
 function nGramsFunc(text, num) {
+    text = text.replace(/\s*([,.!?:;]+)(?!\s*$)\s*/g, ' $1 ');
+    text = text.replace(/([""()])/g, "")
     const order = num || 2;
     const nGrams = [];
     for (let i = 0; i <= (text.length - 1) / (order * 2); i++) {
@@ -27,7 +29,7 @@ function nGramsFunc(text, num) {
             nGrams.push(gram.join(" "))
         }
     }
-    return newWords(nGrams, 200)
+    return newWords(nGrams, 20)
 }
 
 
@@ -60,7 +62,9 @@ function newWords(nGrams, amount) {
         let nGram = nGrams[num]
         generatedText.unshift(nGram)
     }
-    console.log(generatedText.join(" "))
+    generatedText = generatedText.join(" ")
+    generatedText = generatedText.replace(/\s*([,.!?:;]+)(?!\s*$)\s*/g, '$1 ');
+    console.log(generatedText)
 }
 /*
 - if i do something like for each  key in the obj returned from nGrams(text, 2)
