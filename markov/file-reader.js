@@ -1,5 +1,6 @@
 const fs = require('fs');
-//const nGrams = require('./chat-gpt-grams')
+const markovChain = require('./ngrams');
+const generateText = require('./generate-text');
 
 async function readText() {
     return new Promise((resolve, reject) => {
@@ -18,5 +19,9 @@ function cleanText(text) {
 }
 
 readText().then((result) => {
-    console.log(cleanText(result));
+    const words = cleanText(result);
+    const nGrams = markovChain(words)
+    const newText = generateText(nGrams, 20)
+    console.log(newText)
+
 });
